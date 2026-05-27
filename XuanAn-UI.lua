@@ -4,21 +4,18 @@
 local Library = {}
 Library.__index = Library
 
--- SERVICES
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
--- TẠO SCREENGUI CHÍNH
 local gui = Instance.new("ScreenGui")
 gui.Name = "XuanLib"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- HÀM TẠO FRAME CÓ THỂ KÉO THẢ
 local function MakeDraggable(frame)
     local dragging = false
     local dragStart, startPos
@@ -45,7 +42,6 @@ local function MakeDraggable(frame)
     end)
 end
 
--- TẠO BUTTON CÓ CORNER
 local function MakeButton(text, color, size, position, parent)
     local btn = Instance.new("TextButton")
     btn.Size = size
@@ -60,7 +56,6 @@ local function MakeButton(text, color, size, position, parent)
     return btn
 end
 
--- ============ CLASS WINDOW ============
 function Library:Window(config)
     local self = setmetatable({}, Library)
     self.Title = config.Title or "Window"
@@ -70,7 +65,6 @@ function Library:Window(config)
     self.Tabs = {}
     self.CurrentTab = nil
     
-    -- MAIN FRAME
     self.Frame = Instance.new("Frame")
     self.Frame.Size = self.Size
     self.Frame.Position = self.Position
@@ -80,7 +74,6 @@ function Library:Window(config)
     Instance.new("UICorner", self.Frame).CornerRadius = UDim.new(0, 6)
     MakeDraggable(self.Frame)
     
-    -- TITLE BAR
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Size = UDim2.new(1, 0, 0, 25)
     self.TitleBar.BackgroundColor3 = Color3.fromRGB(40,40,40)
@@ -99,7 +92,6 @@ function Library:Window(config)
     self.TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.TitleLabel.Parent = self.TitleBar
     
-    -- TOGGLE BUTTON (thu gọn)
     self.ToggleBtn = Instance.new("TextButton")
     self.ToggleBtn.Size = UDim2.new(0, 20, 1, -4)
     self.ToggleBtn.Position = UDim2.new(1, -25, 0, 2)
@@ -116,7 +108,6 @@ function Library:Window(config)
         self.ToggleBtn.Text = self.Visible and "-" or "+"
     end)
     
-    -- TAB CONTAINER
     self.TabContainer = Instance.new("Frame")
     self.TabContainer.Size = UDim2.new(1, 0, 0, 25)
     self.TabContainer.Position = UDim2.new(0, 0, 0, 25)
@@ -124,7 +115,6 @@ function Library:Window(config)
     self.TabContainer.BackgroundTransparency = 0.3
     self.TabContainer.Parent = self.Frame
     
-    -- CONTENT CONTAINER
     self.Content = Instance.new("Frame")
     self.Content.Size = UDim2.new(1, 0, 1, -50)
     self.Content.Position = UDim2.new(0, 0, 0, 50)
@@ -135,14 +125,12 @@ function Library:Window(config)
     return self
 end
 
--- HIỆN/ẨN WINDOW
 function Library:SetVisible(visible)
     self.Visible = visible
     self.Frame.Visible = visible
     self.ToggleBtn.Text = visible and "-" or "+"
 end
 
--- ============ CLASS TAB ============
 function Library:Tab(config)
     local tab = {}
     tab.Name = config.Name or "Tab"
@@ -165,7 +153,6 @@ function Library:Tab(config)
         tab.Content.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
     end)
     
-    -- TẠO NÚT TAB
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(0, 80, 1, -4)
     btn.Position = UDim2.new(0, 5 + (#self.Tabs * 85), 0, 2)
@@ -197,7 +184,6 @@ function Library:Tab(config)
     return tab
 end
 
--- ============ CLASS TOGGLE ============
 function Library:Toggle(config)
     local toggle = {}
     toggle.Parent = config.Parent
@@ -206,7 +192,6 @@ function Library:Toggle(config)
     toggle.Callback = config.Callback or function() end
     toggle.Value = toggle.Default
     
-    -- FRAME
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, -10, 0, 30)
     frame.BackgroundColor3 = Color3.fromRGB(40,40,40)
@@ -214,7 +199,6 @@ function Library:Toggle(config)
     frame.Parent = config.Parent.Content
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 5)
     
-    -- LABEL
     local label = Instance.new("TextLabel")
     label.Size = UDim2.new(1, -50, 1, 0)
     label.Position = UDim2.new(0, 5, 0, 0)
@@ -226,7 +210,6 @@ function Library:Toggle(config)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = frame
     
-    -- BUTTON
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(0, 40, 0, 22)
     btn.Position = UDim2.new(1, -45, 0.5, -11)
@@ -248,7 +231,6 @@ function Library:Toggle(config)
     return toggle
 end
 
--- ============ CLASS BUTTON ============
 function Library:Button(config)
     local btn = {}
     btn.Text = config.Text or "Button"
@@ -278,7 +260,6 @@ function Library:Button(config)
     return btn
 end
 
--- ============ CLASS SLIDER ============
 function Library:Slider(config)
     local slider = {}
     slider.Text = config.Text or "Slider"
@@ -349,7 +330,6 @@ function Library:Slider(config)
     return slider
 end
 
--- ============ CLASS DROPDOWN ============
 function Library:Dropdown(config)
     local dropdown = {}
     dropdown.Text = config.Text or "Dropdown"
